@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+  # Sparkle is pinned through the Xcode project without a Package.swift.
+  # Review that pin and its license manually rather than configuring an
+  # inapplicable Swift Package manifest update.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3

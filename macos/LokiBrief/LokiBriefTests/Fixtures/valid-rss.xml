@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Loki Synthetic RSS</title>
+    <item>
+      <guid>rss-item-1</guid>
+      <title>Release fixture</title>
+      <description><![CDATA[<p>A <strong>synthetic</strong> update.</p><script>ignored()</script>]]></description>
+      <link>https://example.com/rss/1#tracking</link>
+      <author>Fixture Author</author>
+      <pubDate>Tue, 15 Jul 2025 16:00:00 +0000</pubDate>
+    </item>
+  </channel>
+</rss>

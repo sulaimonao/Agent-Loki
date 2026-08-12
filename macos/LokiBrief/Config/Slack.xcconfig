@@ -1,0 +1,5 @@
+// Checked-in non-secret defaults. Per-user values belong only in the ignored
+// Slack.local.xcconfig file beside this file.
+LOKI_SLACK_CLIENT_ID =
+#include "Updates.xcconfig"
+#include? "Slack.local.xcconfig"

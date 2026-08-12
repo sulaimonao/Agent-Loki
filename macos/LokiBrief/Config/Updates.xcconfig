@@ -1,0 +1,8 @@
+// Checked-in owner-neutral defaults. A clean checkout has no update authority.
+// Copy Updates.example.xcconfig to the ignored Updates.local.xcconfig only
+// when configuring a token-free HTTPS feed and its matching EdDSA public key.
+LOKI_UPDATE_STABLE_FEED_URL =
+LOKI_UPDATE_BETA_FEED_URL =
+LOKI_UPDATE_INTERNAL_FEED_URL =
+LOKI_UPDATE_PUBLIC_ED_KEY =
+#include? "Updates.local.xcconfig"

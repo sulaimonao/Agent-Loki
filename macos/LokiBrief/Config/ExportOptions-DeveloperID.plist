@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	Owner-neutral export defaults. For a signed distribution export, copy this
+	file to the ignored ExportOptions-DeveloperID.local.plist (or a task-owned
+	temporary path) and add that release operator's teamID and, when selection
+	must be explicit, signingCertificate. Never commit either value.
+	-->
+	<key>destination</key>
+	<string>export</string>
+	<key>method</key>
+	<string>developer-id</string>
+	<key>signingStyle</key>
+	<string>automatic</string>
+	<key>stripSwiftSymbols</key>
+	<true/>
+</dict>
+</plist>

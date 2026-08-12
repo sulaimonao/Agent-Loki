@@ -1,0 +1,8 @@
+// Copy to Signing.local.xcconfig and replace the placeholder for a locally
+// signed development build. This file is an example; do not put owner values
+// in the checked-in copy.
+CODE_SIGNING_ALLOWED = YES
+CODE_SIGNING_REQUIRED = YES
+CODE_SIGN_STYLE = Automatic
+DEVELOPMENT_TEAM = REPLACE_WITH_YOUR_APPLE_TEAM_ID
+CODE_SIGN_IDENTITY = Apple Development

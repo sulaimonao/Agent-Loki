@@ -1,0 +1,12 @@
+// Owner-neutral defaults: Xcode code signing is disabled, and clean checkouts
+// compile without an Apple account, team, certificate, or provisioning profile.
+// A current linker may still attach a non-distribution ad-hoc linker signature.
+// Copy Signing.example.xcconfig to the ignored Signing.local.xcconfig only for
+// local Xcode development. Release automation should prefer task-local
+// xcodebuild inputs so the selected identity is explicit in the release gate.
+CODE_SIGNING_ALLOWED = NO
+CODE_SIGNING_REQUIRED = NO
+CODE_SIGN_STYLE = Manual
+DEVELOPMENT_TEAM =
+CODE_SIGN_IDENTITY =
+#include? "Signing.local.xcconfig"

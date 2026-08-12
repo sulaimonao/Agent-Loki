@@ -1,0 +1,61 @@
+name: Bug report
+description: Report a reproducible Agent Loki problem using synthetic or redacted data.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include credentials, message or email bodies, private URLs, databases, attachments, screenshots with personal data, or absolute private paths. Report vulnerabilities through SECURITY.md instead.
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: Provide the source tag, commit, or app version/build.
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Surface
+      options:
+        - Native macOS app
+        - Slack connector
+        - Discord connector
+        - Support Email import
+        - Loki Vault or semantic retrieval
+        - Legacy TypeScript Discord bot
+        - Documentation or release tooling
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction
+      description: Use synthetic data and list the smallest repeatable steps.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include only consumer-visible text and bounded reason codes.
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy confirmation
+      options:
+        - label: I removed credentials, private content, identifiers, paths, and production data.
+          required: true
+        - label: This is not a vulnerability report.
+          required: true

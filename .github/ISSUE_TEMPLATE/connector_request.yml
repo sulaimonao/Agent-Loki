@@ -1,0 +1,61 @@
+name: Connector request
+description: Propose a bounded, least-privilege source connector without private account data.
+title: "[Connector]: "
+labels:
+  - connector
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the connector contract using public documentation and synthetic examples. Do not include credentials, private URLs, account identifiers, message or email content, screenshots, or exported provider data.
+  - type: input
+    id: provider
+    attributes:
+      label: Provider or local format
+      description: Name the public API, protocol, or local file format.
+    validations:
+      required: true
+  - type: textarea
+    id: user_outcome
+    attributes:
+      label: User outcome
+      description: Explain the read-only user need and why existing sources do not meet it.
+    validations:
+      required: true
+  - type: textarea
+    id: authority
+    attributes:
+      label: Authority and allowlist
+      description: List minimum scopes, explicit account/container selection, and every write operation that must remain forbidden.
+    validations:
+      required: true
+  - type: textarea
+    id: transport
+    attributes:
+      label: Authentication and transport
+      description: Link public provider documentation and identify REST, polling, local-file, webhook, or streaming boundaries.
+    validations:
+      required: true
+  - type: textarea
+    id: data_lifecycle
+    attributes:
+      label: Data lifecycle
+      description: Describe bounded fields, pagination, edits/deletions, attachments, retention, disconnect, and local deletion.
+    validations:
+      required: true
+  - type: textarea
+    id: fixture_plan
+    attributes:
+      label: Synthetic fixture plan
+      description: Explain how success, failure, cancellation, rate limits, provenance, and forbidden writes can be tested without a live account.
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy confirmation
+      options:
+        - label: This request contains no credential, private content, account identifier, private path, or production export.
+          required: true
+        - label: I understand that this request does not authorize implementation, provider writes, or live-account testing.
+          required: true

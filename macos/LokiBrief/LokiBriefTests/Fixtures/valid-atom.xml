@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Loki Synthetic Atom</title>
+  <entry>
+    <id>tag:example.com,2025:atom-1</id>
+    <title>Research fixture</title>
+    <summary>Bounded synthetic evidence.</summary>
+    <link rel="alternate" href="https://example.com/atom/1" />
+    <author><name>Fixture Author</name></author>
+    <published>2025-07-15T16:00:00Z</published>
+    <updated>2025-07-15T16:30:00.000Z</updated>
+  </entry>
+</feed>

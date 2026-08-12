@@ -1,0 +1,11 @@
+schemaVersion: 1
+moderation:
+  scam_domains:
+    - "bit.ly"
+    - "tinyurl.com"
+  spam:
+    repeated_messages_threshold: 4
+    window_seconds: 20
+  mass_mentions:
+    threshold: 8
+  forbidden_phrases: []

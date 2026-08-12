@@ -1,0 +1,137 @@
+{
+  "version": "agent-loki.p8e.synthetic-retrieval.v1",
+  "documents": [
+    {
+      "id": "orbital-01",
+      "text": "Orbital greenhouse tomato seedlings use red and blue LED cycles with closed-loop humidity control."
+    },
+    {
+      "id": "orbital-02",
+      "text": "A spacecraft greenhouse grows tomatoes in microgravity with hydroponic nutrient delivery."
+    },
+    {
+      "id": "orbital-03",
+      "text": "Crewed orbital agriculture monitors tomato roots, leaf moisture, and carbon dioxide."
+    },
+    {
+      "id": "orbital-04",
+      "text": "Microgravity crop research evaluates fruiting plants inside a sealed space habitat."
+    },
+    {
+      "id": "orbital-05",
+      "text": "Space station botany experiments track edible plant growth under artificial light."
+    },
+    {
+      "id": "wind-01",
+      "text": "Offshore wind turbine blades are inspected by autonomous drones after saltwater storms."
+    },
+    {
+      "id": "wind-02",
+      "text": "Drone cameras detect cracks and erosion on coastal wind turbine rotor blades."
+    },
+    {
+      "id": "wind-03",
+      "text": "Marine wind farm maintenance uses aerial imaging to schedule blade repairs."
+    },
+    {
+      "id": "wind-04",
+      "text": "Technicians review turbine nacelle and rotor imagery captured above the ocean."
+    },
+    {
+      "id": "wind-05",
+      "text": "Renewable energy operators inspect tall coastal equipment for storm damage."
+    },
+    {
+      "id": "cello-01",
+      "text": "A luthier adjusts a cello bridge and soundpost to restore warm acoustic resonance."
+    },
+    {
+      "id": "cello-02",
+      "text": "Cello repair requires careful bridge fitting, string-height measurement, and soundpost placement."
+    },
+    {
+      "id": "cello-03",
+      "text": "An orchestral instrument workshop corrects buzzing and uneven tone on a wooden cello."
+    },
+    {
+      "id": "cello-04",
+      "text": "String instrument maintenance balances neck relief, bridge curvature, and resonant response."
+    },
+    {
+      "id": "cello-05",
+      "text": "A craftsperson services a bowed wooden instrument before a concert."
+    },
+    {
+      "id": "rye-01",
+      "text": "Rye sourdough fermentation is stabilized by feeding a mature starter at a consistent warm temperature."
+    },
+    {
+      "id": "rye-02",
+      "text": "A baker controls rye starter acidity through scheduled flour and water feedings."
+    },
+    {
+      "id": "rye-03",
+      "text": "Whole-grain sourdough dough develops flavor during a measured overnight fermentation."
+    },
+    {
+      "id": "rye-04",
+      "text": "Bread fermentation timing depends on starter strength, hydration, and room temperature."
+    },
+    {
+      "id": "rye-05",
+      "text": "Artisan bread making uses a living culture instead of packaged yeast."
+    },
+    {
+      "id": "reef-01",
+      "text": "Coral reef health is monitored with underwater hydrophones that record fish and invertebrate sounds."
+    },
+    {
+      "id": "reef-02",
+      "text": "Marine biologists analyze reef soundscapes from submerged acoustic sensors."
+    },
+    {
+      "id": "reef-03",
+      "text": "Passive underwater audio reveals changes in coral habitat biodiversity."
+    },
+    {
+      "id": "reef-04",
+      "text": "Ocean researchers compare nightly biological sound activity across reef restoration sites."
+    },
+    {
+      "id": "reef-05",
+      "text": "Long-term marine habitat surveys combine acoustic observations with ecological sampling."
+    }
+  ],
+  "queries": [
+    {
+      "id": "query-orbital",
+      "text": "How are tomato seedlings managed in an orbital greenhouse?",
+      "expected_top1": "orbital-01",
+      "expected_top5_set": ["orbital-01", "orbital-02", "orbital-03", "orbital-04", "orbital-05"]
+    },
+    {
+      "id": "query-wind",
+      "text": "How can drones inspect offshore wind turbine blades after coastal storms?",
+      "expected_top1": "wind-01",
+      "expected_top5_set": ["wind-01", "wind-02", "wind-03", "wind-04", "wind-05"]
+    },
+    {
+      "id": "query-cello",
+      "text": "How does a luthier adjust a cello bridge and soundpost for better resonance?",
+      "expected_top1": "cello-01",
+      "expected_top5_set": ["cello-01", "cello-02", "cello-03", "cello-04", "cello-05"]
+    },
+    {
+      "id": "query-rye",
+      "text": "How should a rye sourdough starter be fed to keep fermentation stable?",
+      "expected_top1": "rye-01",
+      "expected_top5_set": ["rye-01", "rye-02", "rye-03", "rye-04", "rye-05"]
+    },
+    {
+      "id": "query-reef",
+      "text": "How do hydrophones and underwater soundscapes measure coral reef health?",
+      "expected_top1": "reef-01",
+      "expected_top5_set": ["reef-01", "reef-02", "reef-03", "reef-04", "reef-05"]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+// Feed URLs are public binary-host configuration, never source-repository URLs
+// containing credentials or query tokens. HTTPS is mandatory. Replace the
+// public-key placeholder with the base64-encoded 32-byte Ed25519 public key
+// matching the private Sparkle update-signing key. Never put the private key
+// in this file, any xcconfig, the repository, or build logs.
+LOKI_UPDATE_STABLE_FEED_URL = https:/$()/updates.example.invalid/stable/appcast.xml
+LOKI_UPDATE_BETA_FEED_URL = https:/$()/updates.example.invalid/beta/appcast.xml
+LOKI_UPDATE_INTERNAL_FEED_URL = https:/$()/updates.example.invalid/internal/appcast.xml
+LOKI_UPDATE_PUBLIC_ED_KEY = REPLACE_WITH_BASE64_ENCODED_32_BYTE_ED25519_PUBLIC_KEY

@@ -1,0 +1,46 @@
+node_modules/
+dist/
+coverage/
+
+# Native macOS build and per-user Xcode state
+DerivedData/
+*.xcuserstate
+xcuserdata/
+macos/LokiBrief/Config/Slack.local.xcconfig
+macos/LokiBrief/Config/Updates.local.xcconfig
+macos/LokiBrief/Config/Signing.local.xcconfig
+macos/LokiBrief/Config/ExportOptions-DeveloperID.local.plist
+
+# Generated release and Apple distribution artifacts
+*.dmg
+*.pkg
+*.xcarchive/
+*.notarytool.json
+*.notarization.log
+release-artifacts/
+release-output/
+
+.env
+.env.*
+!.env.example
+
+.DS_Store
+*.log
+*.ndjson
+*.lokivault
+loki-vault.sqlite3
+loki-vault.sqlite3-wal
+loki-vault.sqlite3-shm
+*.lokivault-staging/
+
+# Runtime data (keep only placeholder folders)
+data/*
+!data/checkpoints/
+!data/logs/
+!data/exports/
+data/checkpoints/*
+!data/checkpoints/.gitkeep
+data/logs/*
+!data/logs/.gitkeep
+data/exports/*
+!data/exports/.gitkeep

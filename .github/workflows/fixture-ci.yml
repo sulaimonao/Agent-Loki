@@ -1,0 +1,133 @@
+name: Fixture-only macOS CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fixture-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release-hygiene:
+    name: Release hygiene (offline)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out candidate without credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+
+      - name: Verify docs, licenses, paths, secrets, and script syntax
+        run: |
+          expected_origin="https://github.com/${GITHUB_REPOSITORY}.git"
+          git remote set-url origin "$expected_origin"
+          scripts/verify-release.sh \
+            --public-clean-history \
+            --expected-origin "$expected_origin"
+
+  fixture-tests:
+    name: Fixture-only build and test
+    needs: release-hygiene
+    runs-on: macos-15
+    timeout-minutes: 60
+    env:
+      # The macOS 15 runner is a compatibility lane. Select Xcode explicitly;
+      # do not inherit the runner image's moving default.
+      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
+      LOKI_LIVE_OLLAMA: "0"
+      LOKI_P7_LIVE_OLLAMA: "0"
+      LOKI_P8_LIVE_OLLAMA: "0"
+      LOKI_LIVE_FEED_URL: ""
+      ENABLE_ENFORCEMENT: "false"
+    steps:
+      - name: Check out candidate without credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@1e60f620b9541d620a8e0c122a2b402f8de6c576
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install locked Node dependencies
+        run: npm ci
+
+      - name: Build and test legacy TypeScript runtime
+        run: |
+          npm run build
+          npm test
+
+      - name: Assert pinned native toolchain
+        run: |
+          xcodebuild -version
+          swift --version
+          test "$(xcodebuild -version | sed -n '1p')" = "Xcode 16.4"
+
+      - name: Build universal native fixture test bundle
+        run: |
+          xcodebuild \
+            -project macos/LokiBrief/LokiBrief.xcodeproj \
+            -scheme LokiBrief \
+            -configuration Debug \
+            -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/LokiBriefDerivedData" \
+            -disableAutomaticPackageResolution \
+            -onlyUsePackageVersionsFromResolvedFile \
+            -skipPackageUpdates \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            DEVELOPMENT_TEAM= \
+            CODE_SIGN_IDENTITY= \
+            ONLY_ACTIVE_ARCH=NO \
+            'ARCHS=arm64 x86_64' \
+            build-for-testing
+
+      - name: Run native fixture tests
+        run: |
+          xcodebuild \
+            -project macos/LokiBrief/LokiBrief.xcodeproj \
+            -scheme LokiBrief \
+            -configuration Debug \
+            -destination 'platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/LokiBriefDerivedData" \
+            -disableAutomaticPackageResolution \
+            -onlyUsePackageVersionsFromResolvedFile \
+            -skipPackageUpdates \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            DEVELOPMENT_TEAM= \
+            CODE_SIGN_IDENTITY= \
+            -parallel-testing-enabled NO \
+            test-without-building
+
+      - name: Build unsigned universal Release
+        run: |
+          xcodebuild \
+            -project macos/LokiBrief/LokiBrief.xcodeproj \
+            -scheme LokiBrief \
+            -configuration Release \
+            -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/LokiBriefRelease" \
+            -disableAutomaticPackageResolution \
+            -onlyUsePackageVersionsFromResolvedFile \
+            -skipPackageUpdates \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            DEVELOPMENT_TEAM= \
+            CODE_SIGN_IDENTITY= \
+            ONLY_ACTIVE_ARCH=NO \
+            'ARCHS=arm64 x86_64' \
+            build
