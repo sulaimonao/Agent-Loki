@@ -76,12 +76,12 @@ jobs:
   fixture-tests:
     name: Fixture-only build and test
     needs: release-hygiene
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 60
     env:
-      # The macOS 15 runner is a compatibility lane. Select Xcode explicitly;
-      # do not inherit the runner image's moving default.
-      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
+      # RC3 was sealed with Xcode 26.6. Select it explicitly instead of
+      # inheriting the runner image's moving default.
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
       LOKI_LIVE_OLLAMA: "0"
       LOKI_P7_LIVE_OLLAMA: "0"
       LOKI_P8_LIVE_OLLAMA: "0"
@@ -127,7 +127,7 @@ jobs:
         run: |
           xcodebuild -version
           swift --version
-          test "$(xcodebuild -version | sed -n '1p')" = "Xcode 16.4"
+          test "$(xcodebuild -version | sed -n '1p')" = "Xcode 26.6"
 
       - name: Build universal native fixture test bundle
         run: |
