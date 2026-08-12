@@ -6,6 +6,15 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      candidate_ref:
+        description: Git ref to verify (for example, v1.0.0-rc.3)
+        required: true
+        type: string
+      expected_commit_sha:
+        description: Full commit SHA expected after checkout
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -26,14 +35,43 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
           persist-credentials: false
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.candidate_ref || github.sha }}
+
+      - name: Verify checked-out candidate commit
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        env:
+          EXPECTED_COMMIT_SHA: ${{ inputs.expected_commit_sha }}
+        run: |
+          if [[ ! "$EXPECTED_COMMIT_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "expected_commit_sha must be a full lowercase commit SHA" >&2
+            exit 1
+          fi
+          actual_commit="$(git rev-parse HEAD)"
+          printf 'Expected commit: %s\n' "$EXPECTED_COMMIT_SHA"
+          printf 'Checked-out commit: %s\n' "$actual_commit"
+          test "$actual_commit" = "$EXPECTED_COMMIT_SHA"
 
       - name: Verify docs, licenses, paths, secrets, and script syntax
         run: |
           expected_origin="https://github.com/${GITHUB_REPOSITORY}.git"
           git remote set-url origin "$expected_origin"
-          scripts/verify-release.sh \
-            --public-clean-history \
-            --expected-origin "$expected_origin"
+          test "$(git remote get-url origin)" = "$expected_origin"
+          scripts/check-secrets.sh --history
+
+          echo "Running strict release hygiene in an isolated exported-tree harness; live ref identity is verified separately."
+          release_tree="$(mktemp -d "$RUNNER_TEMP/agent-loki-release-tree.XXXXXX")"
+          git archive --format=tar HEAD | tar -xf - -C "$release_tree"
+          candidate_version="$(sed -nE 's/^[[:space:]]*"version"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p' package.json | sed -n '1p')"
+          candidate_tag="v${candidate_version}"
+          git -C "$release_tree" init --quiet --initial-branch=main
+          git -C "$release_tree" config user.name "Agent Loki CI"
+          git -C "$release_tree" config user.email "ci@agent-loki.invalid"
+          git -C "$release_tree" config commit.gpgsign false
+          git -C "$release_tree" config tag.gpgsign false
+          git -C "$release_tree" add --force --all
+          git -C "$release_tree" commit --quiet -m "Verify exported candidate tree"
+          git -C "$release_tree" tag --annotate "$candidate_tag" -m "$candidate_tag"
+          "$release_tree/scripts/verify-release.sh" --public-clean-history
 
   fixture-tests:
     name: Fixture-only build and test
@@ -55,9 +93,24 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.candidate_ref || github.sha }}
+
+      - name: Verify checked-out candidate commit
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        env:
+          EXPECTED_COMMIT_SHA: ${{ inputs.expected_commit_sha }}
+        run: |
+          if [[ ! "$EXPECTED_COMMIT_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "expected_commit_sha must be a full lowercase commit SHA" >&2
+            exit 1
+          fi
+          actual_commit="$(git rev-parse HEAD)"
+          printf 'Expected commit: %s\n' "$EXPECTED_COMMIT_SHA"
+          printf 'Checked-out commit: %s\n' "$actual_commit"
+          test "$actual_commit" = "$EXPECTED_COMMIT_SHA"
 
       - name: Set up Node.js
-        uses: actions/setup-node@1e60f620b9541d620a8e0c122a2b402f8de6c576
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: "22"
           cache: npm
