@@ -148,7 +148,10 @@ jobs:
             'ARCHS=arm64 x86_64' \
             build-for-testing
 
-      - name: Run native fixture tests
+      # This asynchronous lifecycle fixture has a strict two-second deadline.
+      # Run it once in a fresh test host, then run every other fixture once in
+      # a second host. Neither invocation retries or ignores a failure.
+      - name: Run isolated provider-revocation fixture
         run: |
           xcodebuild \
             -project macos/LokiBrief/LokiBrief.xcodeproj \
@@ -164,6 +167,26 @@ jobs:
             DEVELOPMENT_TEAM= \
             CODE_SIGN_IDENTITY= \
             -parallel-testing-enabled NO \
+            -only-testing:LokiBriefTests/LokiChatControllerLifecycleTests/testHistoryOffVaultEvidenceIsScrubbedByRawProviderRevocation \
+            test-without-building
+
+      - name: Run remaining native fixture tests
+        run: |
+          xcodebuild \
+            -project macos/LokiBrief/LokiBrief.xcodeproj \
+            -scheme LokiBrief \
+            -configuration Debug \
+            -destination 'platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/LokiBriefDerivedData" \
+            -disableAutomaticPackageResolution \
+            -onlyUsePackageVersionsFromResolvedFile \
+            -skipPackageUpdates \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            DEVELOPMENT_TEAM= \
+            CODE_SIGN_IDENTITY= \
+            -parallel-testing-enabled NO \
+            -skip-testing:LokiBriefTests/LokiChatControllerLifecycleTests/testHistoryOffVaultEvidenceIsScrubbedByRawProviderRevocation \
             test-without-building
 
       - name: Build unsigned universal Release
