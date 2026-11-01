@@ -110,7 +110,7 @@ jobs:
           test "$actual_commit" = "$EXPECTED_COMMIT_SHA"
 
       - name: Set up Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
           node-version: "22"
           cache: npm
